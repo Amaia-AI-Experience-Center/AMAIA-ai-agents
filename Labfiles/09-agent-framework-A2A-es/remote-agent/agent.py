@@ -10,15 +10,15 @@ from azure.ai.projects import AIProjectClient
 from azure.identity import AzureCliCredential
 from dotenv import load_dotenv, find_dotenv
 
-# Cargar variables de entorno
+# Load environment variables
 load_dotenv(find_dotenv(usecwd=True))
 
-# Configurar logging más limpio
+# Configure cleaner logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(message)s'
 )
-# Silenciar logs de Azure y httpx
+# Silence Azure and httpx logs
 logging.getLogger('azure').setLevel(logging.WARNING)
 logging.getLogger('httpx').setLevel(logging.WARNING)
 logging.getLogger('azure.core.pipeline.policies.http_logging_policy').setLevel(logging.WARNING)
@@ -26,20 +26,20 @@ logging.getLogger('azure.core.pipeline.policies.http_logging_policy').setLevel(l
 logger = logging.getLogger(__name__)
 app = FastAPI()
 
-# Obtener el directorio donde está este archivo
+# Get the directory where this file is located
 AGENT_DIR = Path(__file__).parent
 
-# Obtener configuración desde variables de entorno
+# Get configuration from environment variables
 project_endpoint = os.getenv("PROJECT_ENDPOINT")
 model_deployment = os.getenv("MODEL_DEPLOYMENT_NAME")
 
-# Inicializar el cliente de AI Project
+# Initialize the AI Project client
 project_client = AIProjectClient(
     endpoint=project_endpoint,
     credential=AzureCliCredential()
 )
 
-# ID del agente (debe estar configurado en variables de entorno o aquí)
+# Agent ID (should be configured in environment variables or here)
 AGENT_ID = os.environ.get("AGENT_ID", "asst_JyFnOBMLwmogoyUjV1kRKVxn")
  
 @app.get("/.well-known/agent.json")
@@ -60,7 +60,7 @@ async def invoke(request: Request):
     try:
         request_data = await request.json()
         
-        # Extraer el mensaje del usuario
+        # Extract user message
         user_prompt = ""
         if "params" in request_data and "message" in request_data["params"]:
             message_parts = request_data["params"]["message"].get("parts", [])
@@ -75,11 +75,11 @@ async def invoke(request: Request):
         logger.info(f"Question received: \"{user_prompt[:100]}...\"")
         logger.info("-"*80)
 
-        # Crear thread para el agente
+        # Create thread for the agent
         thread = project_client.agents.threads.create()
         logger.info(f"Created conversation thread: {thread.id}")
 
-        # Agregar mensaje del usuario
+        # Add user message
         message = project_client.agents.messages.create(
             thread_id=thread.id,
             role="user",
@@ -95,14 +95,14 @@ async def invoke(request: Request):
         )
         logger.info(f"Agent processing completed: {run.status}")
 
-        # Obtener respuestas del agente
+        # Get agent responses
         messages = project_client.agents.messages.list(thread_id=thread.id)
         
-        # Extraer la última respuesta del agente
+        # Extract the last response from the agent
         response_text = "No response from agent"
         for msg in messages:
             if msg.role == "assistant":
-                # Obtener el primer mensaje de texto del asistente
+                # Get the first text message from the assistant
                 for content_item in msg.content:
                     if hasattr(content_item, 'text'):
                         response_text = content_item.text.value
