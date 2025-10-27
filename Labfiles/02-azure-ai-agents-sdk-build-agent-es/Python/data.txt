@@ -1,0 +1,9 @@
+Componente,Coste_Fabricación_EUR
+Turbina_Alta_Presión, 156780.50
+Compresor_Baja_Presión, 89340.75
+Álabes_Turbina, 45620.00
+Cámara_Combustión, 98750.25
+Eje_Rotor, 67890.40
+Carcasa_Fan, 34210.80
+Sistema_Sellado, 23450.60
+Rodamientos_Principales, 41230.90

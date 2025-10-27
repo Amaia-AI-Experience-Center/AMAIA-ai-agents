@@ -1,0 +1,10 @@
+{
+  "name": "technical-support-agent",
+  "description": "A technical support agent for plane engineering.",
+  "url": "http://127.0.0.1:8000/invoke",
+  "version": "1.0",
+  "skills": [],
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text"],
+  "capabilities": {}
+}
