@@ -20,15 +20,7 @@ chmod +x setup-script.sh
 
 ### 2. Configurar Variables de Entorno
 
-Crea un archivo `.env` en la raíz del proyecto con tus credenciales de Azure:
-
-```
-AZURE_SUBSCRIPTION_ID=<tu-subscription-id>
-AZURE_RESOURCE_GROUP=<tu-resource-group>
-AZURE_OPENAI_ENDPOINT=<tu-endpoint>
-AZURE_OPENAI_API_KEY=<tu-api-key>
-AZURE_OPENAI_DEPLOYMENT_NAME=<tu-deployment-name>
-```
+Rellena el archivo `.env` en la raíz del proyecto con tus credenciales de Azure
 
 ### 3. Autenticarse con Azure
 
@@ -37,8 +29,6 @@ Ejecuta el siguiente comando para autenticarte con Azure:
 ```bash
 az login
 ```
-
-Esto abrirá una ventana del navegador para que inicies sesión con tu cuenta de Azure.
 
 ## Estructura del Proyecto
 
